@@ -1,18 +1,16 @@
 var canvas = document.getElementById("gameCanvas");
 var context = canvas.getContext("2d");
-context.canvas.width = window.innerWidth;
-context.canvas.height = window.innerHeight;
+
+context.canvas.width = window.innerWidth - 12;
+context.canvas.height = 800;
 
 function drawRectangle(x, y, w, h, alive, context){
-  context.beginPath();
-  context.rect(x, y, w, h);
   if(alive == 1){
-    context.fillStyle = "#FFFFFF";
-  }else{
     context.fillStyle = "#000000";
+  }else{
+    context.fillStyle = "#FFFFFF";
   }
-  context.fill();
-  context.stroke();
+  context.fillRect(x, y, w, h);
 }
 
 function drawBoard(myBoard, context){
@@ -69,6 +67,10 @@ function updateBoard(myBoard){
 function drawCanvas(myBoard, canvas, context) {
   context.clearRect(0, 0, canvas.width, canvas.height);
   drawBoard(myBoard, context);
+}
+
+function runGame(myBoard, canvas, context){
+  drawCanvas(myBoard, canvas, context);
   updateBoard(myBoard);
 }
 
@@ -91,8 +93,6 @@ var myBoard = {
   board : new Array(400)
 };
 
-//fillBoard(myBoard);
-
 canvas.addEventListener("mousedown", fillCell, false);
 
 function fillCell(event){
@@ -102,11 +102,11 @@ function fillCell(event){
   var w = context.canvas.width / myBoard.cols;
   var h = context.canvas.height / myBoard.rows;
 
-  var i = Math.floor(x / w);
-  var j = Math.floor(y / h);
+  var j = Math.floor(x / w);
+  var i = Math.floor(y / h);
 
-  alert(i + " " + j);
   myBoard.board[i*myBoard.cols + j] = 1;
+  drawCanvas(myBoard, canvas, context);
 }
 
 var interv;
@@ -115,10 +115,14 @@ function clickButton() {
   if(button.innerText == "Start"){
     button.innerText = "Stop";
     //fillBoard(myBoard);
-    drawCanvas(myBoard, canvas, context);
-    interv = setInterval(drawCanvas, 1000, myBoard, canvas, context);
+    //drawCanvas(myBoard, canvas, context);
+    interv = setInterval(runGame, 1000, myBoard, canvas, context);
   }else{
     button.innerText = "Start";
     clearInterval(interv);
   }
 };
+
+function randclickButton(){
+    var button = document.getElementById
+}
