@@ -3,10 +3,22 @@ var context = canvas.getContext("2d");
 context.canvas.width = window.innerWidth;
 context.canvas.height = window.innerHeight;
 
-function updateBoard(myBoard){
+function drawRectangle(x, y, w, h, alive, context){
+  context.beginPath();
+  context.rect(x, y, w, h);
+  if(alive == 1){
+    context.fillStyle = "#8ED6FF";
+  }else{
+    context.fillStyle = "#000000";
+  }
+  context.fill();
+  context.stroke();
 }
 
 function drawBoard(myBoard, context){
+}
+
+function updateBoard(myBoard){
 }
 
 function drawCanvas(myBoard, canvas, context) {
