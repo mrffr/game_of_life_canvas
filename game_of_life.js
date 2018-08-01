@@ -7,7 +7,7 @@ function drawRectangle(x, y, w, h, alive, context){
   context.beginPath();
   context.rect(x, y, w, h);
   if(alive == 1){
-    context.fillStyle = "#8ED6FF";
+    context.fillStyle = "#FFFFFF";
   }else{
     context.fillStyle = "#000000";
   }
