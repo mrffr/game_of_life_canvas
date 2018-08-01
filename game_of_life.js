@@ -3,8 +3,16 @@ var context = canvas.getContext("2d");
 context.canvas.width = window.innerWidth;
 context.canvas.height = window.innerHeight;
 
+function updateBoard(myBoard){
+}
+
+function drawBoard(myBoard, context){
+}
+
 function drawCanvas(myBoard, canvas, context) {
-  context.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    drawBoard(myBoard, context);
+    updateBoard(myBoard);
 }
 
 var myBoard = {
