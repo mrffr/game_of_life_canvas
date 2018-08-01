@@ -26,7 +26,7 @@ function drawBoard(myBoard, context){
 }
 
 function updateBoard(myBoard){
-    var boardCopy = myBoard.board.slice();
+  var boardCopy = myBoard.board.slice();
   var neigh_pos = [
     [-1, -1], [-1, 0], [-1, 1],
     [ 0, -1],          [ 0, 1],
@@ -34,7 +34,7 @@ function updateBoard(myBoard){
   ];
 
   for(i = 0; i<myBoard.rows; i++){
-      for(j=0;j<myBoard.cols; j++){
+    for(j=0;j<myBoard.cols; j++){
       var neighbours = 0;
 
       for(e = 0; e < neigh_pos.length; e++){
@@ -60,15 +60,16 @@ function updateBoard(myBoard){
           boardCopy[pos] = 0; //overcrowd
         }
       }
+    }
   }
 
   myBoard.board = boardCopy.slice();
 }
 
 function drawCanvas(myBoard, canvas, context) {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    drawBoard(myBoard, context);
-    updateBoard(myBoard);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  drawBoard(myBoard, context);
+  updateBoard(myBoard);
 }
 
 function fillBoard(myBoard){
@@ -85,23 +86,23 @@ function fillBoard(myBoard){
 }
 
 var myBoard = {
-    cols : 20,
-    rows : 20,
-    board : new Array(400)
+  cols : 20,
+  rows : 20,
+  board : new Array(400)
 };
 
 fillBoard(myBoard);
 
 var interv;
 function clickButton() {
-    var button = document.getElementById("startButton");
+  var button = document.getElementById("startButton");
   if(button.innerText == "Start"){
-      button.innerText = "Stop";
-      fillBoard(myBoard);
-      drawCanvas(myBoard, canvas, context);
-      interv = setInterval(drawCanvas, 1000, myBoard, canvas, context);
+    button.innerText = "Stop";
+    fillBoard(myBoard);
+    drawCanvas(myBoard, canvas, context);
+    interv = setInterval(drawCanvas, 1000, myBoard, canvas, context);
   }else{
-      button.innerText = "Start";
-      clearInterval(interv);
+    button.innerText = "Start";
+    clearInterval(interv);
   }
 };
