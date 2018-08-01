@@ -27,8 +27,38 @@ function drawBoard(myBoard, context){
 
 function updateBoard(myBoard){
     var boardCopy = myBoard.board.slice();
+  var neigh_pos = [
+    [-1, -1], [-1, 0], [-1, 1],
+    [ 0, -1],          [ 0, 1],
+    [ 1, -1], [ 1, 0], [ 1, 1]
+  ];
+
   for(i = 0; i<myBoard.rows; i++){
       for(j=0;j<myBoard.cols; j++){
+      var neighbours = 0;
+
+      for(e = 0; e < neigh_pos.length; e++){
+        var xx = j + neigh_pos[e][0];
+        var yy = i + neigh_pos[e][1];
+        if(yy >= 0 && yy < myBoard.rows && xx >= 0 && xx < myBoard.cols){
+          if(myBoard.board[(yy * myBoard.cols) + xx] == 1){
+            neighbours ++;
+          }
+        }
+      }
+
+      var pos = (i*myBoard.cols) + j;
+      //rules
+      if(myBoard.board[pos] == 0 && neighbours == 3){
+        boardCopy[pos] = 1; //reproduction
+      }else if(myBoard.board[pos] == 1){
+        if(neighbours < 2){
+          boardCopy[pos] = 0; //under pop
+        }else if(neighbours <= 3){
+          boardCopy[pos] = 1; //lives on
+        }else{
+          boardCopy[pos] = 0; //overcrowd
+        }
       }
   }
 
