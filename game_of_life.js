@@ -91,14 +91,30 @@ var myBoard = {
   board : new Array(400)
 };
 
-fillBoard(myBoard);
+//fillBoard(myBoard);
+
+canvas.addEventListener("mousedown", fillCell, false);
+
+function fillCell(event){
+  var x = event.x - canvas.offsetLeft;
+  var y = event.y - canvas.offsetTop;
+
+  var w = context.canvas.width / myBoard.cols;
+  var h = context.canvas.height / myBoard.rows;
+
+  var i = Math.floor(x / w);
+  var j = Math.floor(y / h);
+
+  alert(i + " " + j);
+  myBoard.board[i*myBoard.cols + j] = 1;
+}
 
 var interv;
 function clickButton() {
   var button = document.getElementById("startButton");
   if(button.innerText == "Start"){
     button.innerText = "Stop";
-    fillBoard(myBoard);
+    //fillBoard(myBoard);
     drawCanvas(myBoard, canvas, context);
     interv = setInterval(drawCanvas, 1000, myBoard, canvas, context);
   }else{
