@@ -16,6 +16,13 @@ function drawRectangle(x, y, w, h, alive, context){
 }
 
 function drawBoard(myBoard, context){
+  var w = context.canvas.width / myBoard.cols;
+  var h = context.canvas.height / myBoard.rows;
+  for(i=0; i<myBoard.rows; i++){
+    for(j=0; j<myBoard.cols; j++){
+      drawRectangle(j*w, i*h, w, h, myBoard.board[(i*myBoard.cols) + j], context);
+    }
+  }
 }
 
 function updateBoard(myBoard){
