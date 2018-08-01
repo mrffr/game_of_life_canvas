@@ -26,6 +26,13 @@ function drawBoard(myBoard, context){
 }
 
 function updateBoard(myBoard){
+    var boardCopy = myBoard.board.slice();
+  for(i = 0; i<myBoard.rows; i++){
+      for(j=0;j<myBoard.cols; j++){
+      }
+  }
+
+  myBoard.board = boardCopy.slice();
 }
 
 function drawCanvas(myBoard, canvas, context) {
