@@ -5,12 +5,15 @@ context.canvas.width = window.innerWidth - 12;
 context.canvas.height = 800;
 
 function drawRectangle(x, y, w, h, alive, context){
+    context.beginPath();
   if(alive == 1){
-    context.fillStyle = "#000000";
+    context.fillStyle = "black";
   }else{
-    context.fillStyle = "#FFFFFF";
+    context.fillStyle = "white";
   }
-  context.fillRect(x, y, w, h);
+    context.rect(x, y, w, h);
+    context.fill();
+    context.stroke();
 }
 
 function drawBoard(myBoard, context){
@@ -70,8 +73,8 @@ function drawCanvas(myBoard, canvas, context) {
 }
 
 function runGame(myBoard, canvas, context){
-  drawCanvas(myBoard, canvas, context);
   updateBoard(myBoard);
+  drawCanvas(myBoard, canvas, context);
 }
 
 function fillBoard(myBoard){
@@ -113,9 +116,8 @@ var interv;
 function clickButton() {
   var button = document.getElementById("startButton");
   if(button.innerText == "Start"){
-    button.innerText = "Stop";
-    //fillBoard(myBoard);
-    //drawCanvas(myBoard, canvas, context);
+      button.innerText = "Stop";
+      runGame(myBoard, canvas, context);
     interv = setInterval(runGame, 1000, myBoard, canvas, context);
   }else{
     button.innerText = "Start";
@@ -123,6 +125,8 @@ function clickButton() {
   }
 };
 
-function randclickButton(){
-    var button = document.getElementById
+function clickrandButton(){
+    var button = document.getElementById("randButton");
+    fillBoard(myBoard);
+  drawCanvas(myBoard, canvas, context);
 }
