@@ -34,14 +34,25 @@ function drawCanvas(myBoard, canvas, context) {
     updateBoard(myBoard);
 }
 
+function fillBoard(myBoard){
+  for(i=0;i<myBoard.rows;i++){
+    for(j=0;j<myBoard.cols;j++){
+      var pos = (i * myBoard.cols) + j;
+      if(Math.random() >= 0.5){
+        myBoard.board[pos] = 1;
+      }else{
+        myBoard.board[pos] = 0;
+      }
+    }
+  }
+}
+
 var myBoard = {
     cols : 20,
     rows : 20,
     board : new Array(400)
 };
 
-function fillBoard(myBoard){
-}
 fillBoard(myBoard);
 
 var interv;
