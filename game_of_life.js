@@ -5,15 +5,15 @@ context.canvas.width = window.innerWidth - 12;
 context.canvas.height = 800;
 
 function drawRectangle(x, y, w, h, alive, context){
-    context.beginPath();
+  context.beginPath();
   if(alive == 1){
     context.fillStyle = "black";
   }else{
     context.fillStyle = "white";
   }
-    context.rect(x, y, w, h);
-    context.fill();
-    context.stroke();
+  context.rect(x, y, w, h);
+  context.fill();
+  context.stroke();
 }
 
 function drawBoard(myBoard, context){
@@ -90,6 +90,8 @@ function fillBoard(myBoard){
   }
 }
 
+drawCanvas(myBoard, canvas, context);
+
 var myBoard = {
   cols : 20,
   rows : 20,
@@ -116,8 +118,8 @@ var interv;
 function clickButton() {
   var button = document.getElementById("startButton");
   if(button.innerText == "Start"){
-      button.innerText = "Stop";
-      runGame(myBoard, canvas, context);
+    button.innerText = "Stop";
+    runGame(myBoard, canvas, context);
     interv = setInterval(runGame, 1000, myBoard, canvas, context);
   }else{
     button.innerText = "Start";
@@ -126,7 +128,7 @@ function clickButton() {
 };
 
 function clickrandButton(){
-    var button = document.getElementById("randButton");
-    fillBoard(myBoard);
+  var button = document.getElementById("randButton");
+  fillBoard(myBoard);
   drawCanvas(myBoard, canvas, context);
 }
