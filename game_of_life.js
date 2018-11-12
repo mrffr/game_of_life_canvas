@@ -90,8 +90,6 @@ function fillBoard(myBoard){
   }
 }
 
-drawCanvas(myBoard, canvas, context);
-
 var myBoard = {
   cols : 20,
   rows : 20,
