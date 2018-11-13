@@ -1,3 +1,9 @@
+"use strict";
+
+function GameOfLife() {
+
+};
+
 var canvas = document.getElementById("gameCanvas");
 var context = canvas.getContext("2d");
 
@@ -19,8 +25,8 @@ function drawRectangle(x, y, w, h, alive, context){
 function drawBoard(myBoard, context){
   var w = context.canvas.width / myBoard.cols;
   var h = context.canvas.height / myBoard.rows;
-  for(i=0; i<myBoard.rows; i++){
-    for(j=0; j<myBoard.cols; j++){
+  for(var i=0; i<myBoard.rows; i++){
+    for(var j=0; j<myBoard.cols; j++){
       drawRectangle(j*w, i*h, w, h, myBoard.board[(i*myBoard.cols) + j], context);
     }
   }
@@ -34,11 +40,11 @@ function updateBoard(myBoard){
     [ 1, -1], [ 1, 0], [ 1, 1]
   ];
 
-  for(i = 0; i<myBoard.rows; i++){
-    for(j=0;j<myBoard.cols; j++){
+  for(var i = 0; i<myBoard.rows; i++){
+    for(var j=0;j<myBoard.cols; j++){
       var neighbours = 0;
 
-      for(e = 0; e < neigh_pos.length; e++){
+      for(var e = 0; e < neigh_pos.length; e++){
         var xx = j + neigh_pos[e][0];
         var yy = i + neigh_pos[e][1];
         if(yy >= 0 && yy < myBoard.rows && xx >= 0 && xx < myBoard.cols){
@@ -78,8 +84,8 @@ function runGame(myBoard, canvas, context){
 }
 
 function fillBoard(myBoard){
-  for(i=0;i<myBoard.rows;i++){
-    for(j=0;j<myBoard.cols;j++){
+  for(var i=0;i<myBoard.rows;i++){
+    for(var j=0;j<myBoard.cols;j++){
       var pos = (i * myBoard.cols) + j;
       if(Math.random() >= 0.5){
         myBoard.board[pos] = 1;
@@ -112,6 +118,9 @@ function fillCell(event){
   drawCanvas(myBoard, canvas, context);
 }
 
+/* button functions */
+
+//TODO figure out how to add closure to this
 var interv;
 function clickButton() {
   var button = document.getElementById("startButton");
@@ -130,3 +139,4 @@ function clickrandButton(){
   fillBoard(myBoard);
   drawCanvas(myBoard, canvas, context);
 }
+
