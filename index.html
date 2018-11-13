@@ -9,10 +9,10 @@
 }
     </style>
   </head>
-  <body onload="drawCanvas(myBoard,canvas,context)">
+  <body onload="GameOfLifeNamespace.Module.drawCanvas()">
     <canvas id="gameCanvas">Canvas not loaded.</canvas>
     <script src="game_of_life.js"></script>
-    <button id="startButton" onclick="clickButton()">Start</button>
-    <button id="randButton" onclick="clickrandButton()">Random</button>
+    <button id="startButton" onclick="GameOfLifeNamespace.Module.clickButton()">Start</button>
+    <button id="randButton" onclick="GameOfLifeNamespace.Module.clickRandButton()">Random</button>
   </body>
 </html>

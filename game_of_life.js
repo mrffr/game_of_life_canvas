@@ -1,142 +1,149 @@
 "use strict";
 
-function GameOfLife() {
+//using module style namespace
+var GameOfLifeNamespace = GameOfLifeNamespace || {};
 
-};
+GameOfLifeNamespace.Module = function()
+{
+  var canvas = document.getElementById("gameCanvas");
+  var context = canvas.getContext("2d");
 
-var canvas = document.getElementById("gameCanvas");
-var context = canvas.getContext("2d");
+  context.canvas.width = window.innerWidth - 12;
+  context.canvas.height = 800;
 
-context.canvas.width = window.innerWidth - 12;
-context.canvas.height = 800;
+  /* Board object */
+  var myBoard = {
+    cols : 20,
+    rows : 20,
+    board : new Array(400),
 
-function drawRectangle(x, y, w, h, alive, context){
-  context.beginPath();
-  if(alive == 1){
-    context.fillStyle = "black";
-  }else{
-    context.fillStyle = "white";
-  }
-  context.rect(x, y, w, h);
-  context.fill();
-  context.stroke();
-}
+    updateBoard : function(){
+      var boardCopy = this.board.slice();
+      var neigh_pos = [
+        [-1, -1], [-1, 0], [-1, 1],
+        [ 0, -1],          [ 0, 1],
+        [ 1, -1], [ 1, 0], [ 1, 1]
+      ];
 
-function drawBoard(myBoard, context){
-  var w = context.canvas.width / myBoard.cols;
-  var h = context.canvas.height / myBoard.rows;
-  for(var i=0; i<myBoard.rows; i++){
-    for(var j=0; j<myBoard.cols; j++){
-      drawRectangle(j*w, i*h, w, h, myBoard.board[(i*myBoard.cols) + j], context);
-    }
-  }
-}
+      for(var i = 0; i<this.rows; i++){
+        for(var j=0;j<this.cols; j++){
+          var neighbours = 0;
 
-function updateBoard(myBoard){
-  var boardCopy = myBoard.board.slice();
-  var neigh_pos = [
-    [-1, -1], [-1, 0], [-1, 1],
-    [ 0, -1],          [ 0, 1],
-    [ 1, -1], [ 1, 0], [ 1, 1]
-  ];
+          for(var e = 0; e < neigh_pos.length; e++){
+            var xx = j + neigh_pos[e][0];
+            var yy = i + neigh_pos[e][1];
+            if(yy >= 0 && yy < this.rows && xx >= 0 && xx < this.cols){
+              if(this.board[(yy * this.cols) + xx] == 1){
+                neighbours ++;
+              }
+            }
+          }
 
-  for(var i = 0; i<myBoard.rows; i++){
-    for(var j=0;j<myBoard.cols; j++){
-      var neighbours = 0;
-
-      for(var e = 0; e < neigh_pos.length; e++){
-        var xx = j + neigh_pos[e][0];
-        var yy = i + neigh_pos[e][1];
-        if(yy >= 0 && yy < myBoard.rows && xx >= 0 && xx < myBoard.cols){
-          if(myBoard.board[(yy * myBoard.cols) + xx] == 1){
-            neighbours ++;
+          var pos = (i*this.cols) + j;
+          //rules
+          if(this.board[pos] == 0 && neighbours == 3){
+            boardCopy[pos] = 1; //reproduction
+          }else if(this.board[pos] == 1){
+            if(neighbours < 2){
+              boardCopy[pos] = 0; //under pop
+            }else if(neighbours <= 3){
+              boardCopy[pos] = 1; //lives on
+            }else{
+              boardCopy[pos] = 0; //overcrowd
+            }
           }
         }
       }
 
-      var pos = (i*myBoard.cols) + j;
-      //rules
-      if(myBoard.board[pos] == 0 && neighbours == 3){
-        boardCopy[pos] = 1; //reproduction
-      }else if(myBoard.board[pos] == 1){
-        if(neighbours < 2){
-          boardCopy[pos] = 0; //under pop
-        }else if(neighbours <= 3){
-          boardCopy[pos] = 1; //lives on
-        }else{
-          boardCopy[pos] = 0; //overcrowd
+      this.board = boardCopy.slice();
+    },
+
+    fillBoard : function(){
+      for(var i=0;i<this.rows;i++){
+        for(var j=0;j<this.cols;j++){
+          var pos = (i * this.cols) + j;
+          if(Math.random() >= 0.5){
+            this.board[pos] = 1;
+          }else{
+            this.board[pos] = 0;
+          }
         }
       }
     }
-  }
+  };
 
-  myBoard.board = boardCopy.slice();
-}
+  function drawRectangle(x, y, w, h, alive, context){
+    context.beginPath();
+    if(alive == 1){
+      context.fillStyle = "black";
+    }else{
+      context.fillStyle = "white";
+    }
+    context.rect(x, y, w, h);
+    context.fill();
+    context.stroke();
+  };
 
-function drawCanvas(myBoard, canvas, context) {
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  drawBoard(myBoard, context);
-}
 
-function runGame(myBoard, canvas, context){
-  updateBoard(myBoard);
-  drawCanvas(myBoard, canvas, context);
-}
-
-function fillBoard(myBoard){
-  for(var i=0;i<myBoard.rows;i++){
-    for(var j=0;j<myBoard.cols;j++){
-      var pos = (i * myBoard.cols) + j;
-      if(Math.random() >= 0.5){
-        myBoard.board[pos] = 1;
-      }else{
-        myBoard.board[pos] = 0;
+  function drawCanvas() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    /* Draw the board */
+    var w = context.canvas.width / myBoard.cols;
+    var h = context.canvas.height / myBoard.rows;
+    for(var i=0; i<myBoard.rows; i++){
+      for(var j=0; j<myBoard.cols; j++){
+        drawRectangle(j*w, i*h, w, h, myBoard.board[(i*myBoard.cols) + j], context);
       }
     }
-  }
-}
+  };
 
-var myBoard = {
-  cols : 20,
-  rows : 20,
-  board : new Array(400)
-};
+  function runGame(){
+    myBoard.updateBoard();
+    drawCanvas();
+  };
 
-canvas.addEventListener("mousedown", fillCell, false);
+  canvas.addEventListener("mousedown", fillCell, false);
 
-function fillCell(event){
-  var x = event.x - canvas.offsetLeft;
-  var y = event.y - canvas.offsetTop;
+  function fillCell(event){
+    var x = event.x - canvas.offsetLeft;
+    var y = event.y - canvas.offsetTop;
 
-  var w = context.canvas.width / myBoard.cols;
-  var h = context.canvas.height / myBoard.rows;
+    var w = context.canvas.width / myBoard.cols;
+    var h = context.canvas.height / myBoard.rows;
 
-  var j = Math.floor(x / w);
-  var i = Math.floor(y / h);
+    var j = Math.floor(x / w);
+    var i = Math.floor(y / h);
 
-  myBoard.board[i*myBoard.cols + j] = 1;
-  drawCanvas(myBoard, canvas, context);
-}
+    myBoard.board[i*myBoard.cols + j] = 1;
+    drawCanvas();
+  };
 
-/* button functions */
+  /* button functions */
+  var interv;
+  /* button toggles state start/stop */
+  function clickButton() {
+    var button = document.getElementById("startButton");
+    if(button.innerText == "Start"){
+      button.innerText = "Stop";
+      runGame();
+      interv = setInterval(runGame, 1000);
+    }else{
+      button.innerText = "Start";
+      clearInterval(interv);
+    }
+  };
 
-//TODO figure out how to add closure to this
-var interv;
-function clickButton() {
-  var button = document.getElementById("startButton");
-  if(button.innerText == "Start"){
-    button.innerText = "Stop";
-    runGame(myBoard, canvas, context);
-    interv = setInterval(runGame, 1000, myBoard, canvas, context);
-  }else{
-    button.innerText = "Start";
-    clearInterval(interv);
-  }
-};
+  /* randomly fill board */
+  function clickRandButton(){
+    var button = document.getElementById("randButton");
+    myBoard.fillBoard();
+    drawCanvas();
+  };
 
-function clickrandButton(){
-  var button = document.getElementById("randButton");
-  fillBoard(myBoard);
-  drawCanvas(myBoard, canvas, context);
-}
-
+  var oPublic = {
+    clickButton : clickButton,
+    clickRandButton : clickRandButton,
+    drawCanvas : drawCanvas
+  };
+  return oPublic;
+}();
