@@ -102,9 +102,26 @@ GameOfLifeNamespace.Module = function()
     drawCanvas();
   };
 
+  /* allowing drawing multiple cells as long as mouse button held down */
+  canvas.addEventListener("mousedown", toggleFillCell, false);
+  canvas.addEventListener("mouseup", toggleFillCell, false);
+
+  var drag = false;
+  function toggleFillCell(event){
+    if(event.type === "mousedown"){ 
+      drag = true;
+    }else{
+      drag = false;
+    }
+  }
+
+  canvas.addEventListener("mousemove", fillCell, false);
+  /* mouse down should fill the cell even if we don't move the mouse */
   canvas.addEventListener("mousedown", fillCell, false);
 
+  /* manually filling cells */
   function fillCell(event){
+    if(drag == false){ return; }
     var x = event.x - canvas.offsetLeft;
     var y = event.y - canvas.offsetTop;
 
